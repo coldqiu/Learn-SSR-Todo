@@ -47,7 +47,7 @@
   }
 </script>
 
-<style scoped lang="stylus" rel="stylesheet/stylus">
+<style lang="stylus">
   .helper
     font-weight 100
     display flex

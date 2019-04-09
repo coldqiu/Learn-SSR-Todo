@@ -2,8 +2,8 @@
 const path = require('path')
 const webpack = require('webpack')
 const {VueLoaderPlugin} = require('vue-loader')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const ExtractPlugin = require("extract-text-webpack-plugin")
+// const HtmlWebpackPlugin = require('html-webpack-plugin')
+// const ExtractPlugin = require("extract-text-webpack-plugin")
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const merge = require('webpack-merge')
 const baseConfig = require('./webpack.config.base')
@@ -18,7 +18,7 @@ const defaultPlugins = [
     }
   }),
   new VueLoaderPlugin(),
-  new HtmlWebpackPlugin()
+  // new HtmlWebpackPlugin()
 ]
 
 const devServer = {
@@ -59,8 +59,8 @@ if (isDev) {
     },
     devServer,
     plugins: defaultPlugins.concat[
-      new webpack.HotModuleReplacementPlugin(),
-      new webpack.NoEmitOnErrorsPlugin()
+      new webpack.HotModuleReplacementPlugin()
+      // new webpack.NoEmitOnErrorsPlugin()
     ]
   })
 
@@ -68,38 +68,40 @@ if (isDev) {
   config = merge(baseConfig, {
     entry: {
       app: path.join(__dirname, '../src/index.js'),
-      vendor: ['vue']
+      // vendor: ['vue']
     },
     output: {filename: '[name].[chunkhash:8].js'},
     module: {
       rules: [
         {
           test: /\.styl/,
-          // ExtractPlugin.extract
-          use: ExtractPlugin.extract({
-            fallback: 'style-loader',
-            use: [
-              'css-loader',
-              {
-                loader: 'postcss-loader',
-                options: {
-                  sourceMap: true,
-                }
-              },
-              'style-loader'
-            ]
-          })
+          use: [
+            'css-loader',
+            {
+              loader: 'postcss-loader',
+              options: {
+                sourceMap: true,
+              }
+            },
+            'style-loader'
+          ]
         }
       ]
     },
+    optimization: {
+      splitChunks: {
+        chunks: 'all'
+      },
+      runtimeChunk: true
+    },
     plugins: [
       new MiniCssExtractPlugin('styles.[contentHash:8].css'),
-      new webpack.optimize.CommonsChunkPlugin({
-        name: 'vendor'// 要放在runtime 前面
-      }),
-      new webpack.optimize.CommonsChunkPlugin({
-        name: 'runtime' // ?? 什么作用
-      }),
+      // new webpack.optimize.CommonsChunkPlugin({
+      //   name: 'vendor'// 要放在runtime 前面
+      // }),
+      // new webpack.optimize.CommonsChunkPlugin({
+      //   name: 'runtime' // ?? 什么作用
+      // }),
     ]
   })
 }

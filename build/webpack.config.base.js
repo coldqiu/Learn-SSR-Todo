@@ -1,6 +1,7 @@
 // webpack.config.base.js
-
 const path = require('path')
+const createVueLoaderOptions = require('../vue-loader.conf')
+const { VueLoaderPlugin } = require('vue-loader')
 
 const isDev = process.env.NODE_ENV === 'development'
 
@@ -10,7 +11,7 @@ function resolve(dir) {
 
 const config = {
   target: 'web',
-  mode: 'development',
+  mode: process.env.NODE_ENV || 'production',
   entry: path.join(__dirname, '../src/index.js'),
   output: {
     filename: 'bundle.[hash:8].js',
@@ -18,9 +19,16 @@ const config = {
   },
   module: {
     rules: [
+      // {
+      //   test: /\.(vue|js|jsx)$/,
+      //   loader: 'eslint-loader',
+      //   exclude: /node_modules/,
+      //   enforce: "pre"
+      // },
       {
         test: /\.vue$/,
-        loader: 'vue-loader'
+        loader: 'vue-loader',
+        options: createVueLoaderOptions(isDev)
       },
       {
         test: /\.css$/,
@@ -51,9 +59,13 @@ const config = {
         test: /\.js$/,
         loader: 'babel-loader',
         exclude: /node_modules/,
+        options: {
+          presets: ["@babel/preset-env"]
+        }
       }
     ]
   },
+  plugins: [new VueLoaderPlugin()]
 }
 
 

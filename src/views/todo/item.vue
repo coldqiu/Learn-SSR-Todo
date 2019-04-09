@@ -4,7 +4,7 @@
            class="toggle"
            v-model="todo.completed"
     >
-    <label for="">{{todo.content}}</label>
+    <label>{{todo.content}}</label>
     <button class="destory" @click="deleteTodo"></button>
   </div>
 </template>
@@ -25,7 +25,7 @@
   }
 </script>
 
-<style scoped lang="stylus" rel="stylesheet/stylus">
+<style lang="stylus">
   .todo-item
     position relative
     background-color #fff

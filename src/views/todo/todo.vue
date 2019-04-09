@@ -71,7 +71,7 @@
   }
 </script>
 
-<style scoped lang="stylus" rel="stylesheet/stylus">
+<style lang="stylus">
   .real-app
     width 600px
     margin 0 auto
